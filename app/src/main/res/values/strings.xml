@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">RiseUp</string>
+    <string name="daily_quests">Ежедневные квесты</string>
+    <string name="add_quest">Добавить задание</string>
+    <string name="quest">Задание</string>
+    <string name="delete_quest">Удалить задание</string>
+    <string name="active_quest">Активное задание</string>
+    <string name="quest_name">Название задания</string>
+    <string name="cancel">Отмена</string>
+    <string name="add">Добавить</string>
+    <string name="description_missing">Описание отсутствует</string>
+    <string name="accept">Принять</string>
+    <string name="decline">Отказаться</string>
+    <string name="completed">Выполнено</string>
 </resources>
