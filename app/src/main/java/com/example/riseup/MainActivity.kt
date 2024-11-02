@@ -9,7 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.riseup.ui.screens.QuestListScreen.QuestListScreen
+import com.example.riseup.ui.screens.quest_list.QuestListScreen
 import com.example.riseup.ui.theme.RiseUpTheme
 
 class MainActivity : ComponentActivity() {

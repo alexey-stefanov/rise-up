@@ -1,17 +1,20 @@
-package com.example.riseup.ui.screens.QuestListScreen
+package com.example.riseup.ui.screens.quest_list
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
-import com.example.riseup.data.model.Quest
-import com.example.riseup.data.model.QuestDifficulty
-import com.example.riseup.data.model.QuestType
-import java.time.LocalDate
+import com.example.riseup.data.model.character.Character
+import com.example.riseup.data.model.quest.Quest
+import com.example.riseup.data.model.quest.QuestDifficulty
+import com.example.riseup.data.model.quest.QuestType
 
 class QuestViewModel : ViewModel() {
     private val mutableQuests = mutableStateListOf<Quest>()
     val quests: List<Quest> = mutableQuests
 
     private var questIdCounter = 0
+
+    var character = Character()
+        private set
 
     //private var lastDateChecked: LocalDate = LocalDate.now()
 
@@ -40,6 +43,28 @@ class QuestViewModel : ViewModel() {
         mutableQuests.addAll(dailyQuests)
     }
 
+    private fun addXp(xp: Int) {
+        var newXp = character.currentXp + xp
+        var newLevel = character.level
+        var xpForNextLevel = character.xpForNextLevel
+
+        while (newXp >= xpForNextLevel) {
+            newXp -= xpForNextLevel
+            newLevel++
+            xpForNextLevel = calculateXpForNextLevel(newLevel)
+        }
+
+        character = character.copy(
+            level = newLevel,
+            currentXp = newXp,
+            xpForNextLevel = xpForNextLevel
+        )
+    }
+
+    private fun calculateXpForNextLevel(level: Int): Int {
+        return 100 + (level - 1) * 50
+    }
+
     fun addQuest(name: String, difficulty: QuestDifficulty) {
         val newQuest = Quest(
             id = questIdCounter++,
@@ -66,6 +91,7 @@ class QuestViewModel : ViewModel() {
 
     fun completeQuest(quest: Quest) {
         removeQuest(quest)
+        addXp(quest.xp)
     }
 
     fun removeQuest(quest: Quest) {

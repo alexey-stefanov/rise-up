@@ -1,4 +1,4 @@
-package com.example.riseup.data.model
+package com.example.riseup.data.model.quest
 
 data class Quest(
     val id: Int,

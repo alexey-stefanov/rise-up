@@ -1,4 +1,4 @@
-package com.example.riseup.ui.screens.QuestListScreen
+package com.example.riseup.ui.screens.quest_list
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,9 +34,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.riseup.R
-import com.example.riseup.data.model.Quest
-import com.example.riseup.data.model.QuestDifficulty
-import com.example.riseup.data.model.QuestType
+import com.example.riseup.data.model.quest.Quest
+import com.example.riseup.data.model.quest.QuestDifficulty
+import com.example.riseup.data.model.quest.QuestType
 
 @Composable
 fun QuestItemCard(

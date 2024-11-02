@@ -1,4 +1,4 @@
-package com.example.riseup.ui.screens.QuestListScreen
+package com.example.riseup.ui.screens.quest_list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.riseup.R
-import com.example.riseup.data.model.QuestDifficulty
+import com.example.riseup.data.model.quest.QuestDifficulty
 
 @Composable
 fun AddQuestDialog(
