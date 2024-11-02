@@ -2,7 +2,6 @@
     <string name="app_name">RiseUp</string>
     <string name="daily_quests">Ежедневные квесты</string>
     <string name="add_quest">Добавить задание</string>
-    <string name="quest">Задание</string>
     <string name="delete_quest">Удалить задание</string>
     <string name="active_quest">Активное задание</string>
     <string name="quest_name">Название задания</string>
@@ -12,4 +11,7 @@
     <string name="accept">Принять</string>
     <string name="decline">Отказаться</string>
     <string name="completed">Выполнено</string>
+    <string name="xp">опыта</string>
+    <string name="quest_completed">Задание выполнено! Получено %d опыта!</string>
+    <string name="difficulty">Уровень сложности</string>
 </resources>

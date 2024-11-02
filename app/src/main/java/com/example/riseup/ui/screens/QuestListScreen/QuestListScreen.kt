@@ -1,5 +1,6 @@
 package com.example.riseup.ui.screens.QuestListScreen
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -30,6 +32,8 @@ fun QuestListScreen(viewModel: QuestViewModel = viewModel()) {
     val quests by remember { derivedStateOf { viewModel.quests } }
     var selectedQuest by remember { mutableStateOf<Quest?>(null)}
     var showAddDialog by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -62,6 +66,11 @@ fun QuestListScreen(viewModel: QuestViewModel = viewModel()) {
                 },
                 onCompleteQuest = {
                     viewModel.completeQuest(quest)
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.quest_completed, quest.xp),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     selectedQuest = null
                 }
             )
@@ -78,8 +87,8 @@ fun QuestListScreen(viewModel: QuestViewModel = viewModel()) {
 
         if(showAddDialog) {
             AddQuestDialog(
-                onAddQuest = { questName ->
-                    viewModel.addQuest(questName)
+                onAddQuest = { questName, difficulty ->
+                    viewModel.addQuest(questName, difficulty)
                     showAddDialog = false
                 },
                 onDismiss = { showAddDialog = false }

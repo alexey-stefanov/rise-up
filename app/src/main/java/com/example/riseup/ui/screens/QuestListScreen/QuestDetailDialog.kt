@@ -14,6 +14,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -48,6 +49,12 @@ fun QuestDetailDialog(
                 Text(
                     text = quest.description ?: stringResource(R.string.description_missing),
                     style = MaterialTheme.typography.bodyMedium
+                )
+
+                Text(
+                    text = "${quest.xp} ${stringResource(R.string.xp)}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Gray
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))

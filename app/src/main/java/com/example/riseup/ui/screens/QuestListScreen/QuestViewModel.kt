@@ -3,6 +3,7 @@ package com.example.riseup.ui.screens.QuestListScreen
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import com.example.riseup.data.model.Quest
+import com.example.riseup.data.model.QuestDifficulty
 import com.example.riseup.data.model.QuestType
 import java.time.LocalDate
 
@@ -30,20 +31,21 @@ class QuestViewModel : ViewModel() {
         mutableQuests.removeAll { it.type == QuestType.DAILY }
         // Placeholder
         val dailyQuests = listOf(
-            Quest(id = questIdCounter++, name = "Сделать зарядку", type = QuestType.DAILY),
-            Quest(id = questIdCounter++, name = "Прочитать книгу", type = QuestType.DAILY),
-            Quest(id = questIdCounter++, name = "Медитировать", type = QuestType.DAILY),
-            Quest(id = questIdCounter++, name = "Сходить на пробежку", type = QuestType.DAILY),
-            Quest(id = questIdCounter++, name = "Выпить воды", type = QuestType.DAILY)
+            Quest(id = questIdCounter++, name = "Сделать зарядку", type = QuestType.DAILY, difficulty = QuestDifficulty.EASY),
+            Quest(id = questIdCounter++, name = "Прочитать книгу", type = QuestType.DAILY, difficulty = QuestDifficulty.EASY),
+            Quest(id = questIdCounter++, name = "Медитировать", type = QuestType.DAILY, difficulty = QuestDifficulty.MEDIUM),
+            Quest(id = questIdCounter++, name = "Сходить на пробежку", type = QuestType.DAILY, difficulty = QuestDifficulty.HARD),
+            Quest(id = questIdCounter++, name = "Выпить воды", type = QuestType.DAILY, difficulty = QuestDifficulty.EASY)
         )
         mutableQuests.addAll(dailyQuests)
     }
 
-    fun addQuest(name: String) {
+    fun addQuest(name: String, difficulty: QuestDifficulty) {
         val newQuest = Quest(
             id = questIdCounter++,
             name = name,
-            type = QuestType.REGULAR
+            type = QuestType.REGULAR,
+            difficulty = difficulty
         )
         mutableQuests.add(newQuest)
     }
