@@ -6,5 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface CharacterRepository {
     fun getCharacter(): Flow<Character?>
     suspend fun initializeCharacterIfNeeded()
-    suspend fun insertOrUpdateCharacter(character: Character)
+    suspend fun insertCharacter(character: Character)
+    suspend fun updateCharacter(newLevel: Int, newXp: Int, xpForNextLevel: Int)
 }

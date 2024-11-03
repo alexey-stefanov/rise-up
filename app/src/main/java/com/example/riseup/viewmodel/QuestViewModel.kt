@@ -13,6 +13,7 @@ import com.example.riseup.repository.QuestRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.pow
 
 @HiltViewModel
 class QuestViewModel @Inject constructor(
@@ -70,11 +71,11 @@ class QuestViewModel @Inject constructor(
     }
 
     fun completeQuest(quest: Quest) {
-        viewModelScope.launch {
-            character.value?.let {
+        character.value?.let {
+            viewModelScope.launch {
                 questRepository.completeQuest(quest)
 
-                val xpGained = calculateXpForQuest(quest)
+                val xpGained = quest.difficulty.xp
 
                 var newLevel = it.level
                 var newXp = it.currentXp + xpGained
@@ -86,29 +87,17 @@ class QuestViewModel @Inject constructor(
                     xpForNextLevel = calculateXpForNextLevel(newLevel)
                 }
 
-                updateCharacterLevelAndXp(newLevel, newXp, xpForNextLevel)
+                characterRepository.updateCharacter(newLevel, newXp, xpForNextLevel)
             }
         }
     }
 
-    private fun calculateXpForQuest(quest: Quest): Int {
-        return when (quest.difficulty) {
-            QuestDifficulty.EASY -> 10
-            QuestDifficulty.MEDIUM -> 20
-            QuestDifficulty.HARD -> 30
-        }
-    }
-
     private fun calculateXpForNextLevel(level: Int): Int {
-        return 100 + (level - 1) * 50
-    }
-
-    private suspend fun updateCharacterLevelAndXp(newLevel: Int, newXp: Int, xpForNextLevel: Int) {
-        val updatedCharacter = Character(
-            level = newLevel,
-            currentXp = newXp,
-            xpForNextLevel = xpForNextLevel
-        )
-        characterRepository.insertOrUpdateCharacter(updatedCharacter)
+        return when (level) {
+            in 1..10 -> 100 + (level - 1) * 40
+            in 11..50 -> 500 + (level - 10) * 75
+            in 51..100 -> (3000 * 1.04.pow((level - 50).toDouble())).toInt()
+            else -> 1000000
+        }
     }
 }

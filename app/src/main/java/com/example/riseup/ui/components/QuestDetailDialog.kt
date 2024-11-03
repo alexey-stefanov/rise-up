@@ -52,7 +52,7 @@ fun QuestDetailDialog(
                 )
 
                 Text(
-                    text = "${quest.xp} ${stringResource(R.string.xp)}",
+                    text = "${quest.difficulty.xp} ${stringResource(R.string.xp)}",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray
                 )

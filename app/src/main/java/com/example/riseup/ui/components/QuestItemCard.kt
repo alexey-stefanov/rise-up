@@ -44,20 +44,16 @@ fun QuestItemCard(
     onCardClick: () -> Unit
 ) {
 
-    val gradientBorder = when (quest.type) {
-        QuestType.DAILY -> Brush.linearGradient(
-            colors = listOf(Color(0xFF42A5F5), Color(0xFF1E88E5))
-        )
-
-        QuestType.REGULAR -> Brush.linearGradient(
-            colors = listOf(Color(0xFFFFD700), Color(0xFFFFA500))
-        )
+    val questTypeIndicator = when (quest.type) {
+        QuestType.DAILY -> Color(0xFF42A5F5)
+        QuestType.REGULAR -> Color(0xFFFFD700)
     }
 
-    val difficultyColor = when (quest.difficulty) {
-        QuestDifficulty.EASY -> Color(0xFF66BB6A)
-        QuestDifficulty.MEDIUM -> Color(0xFFFFEB3B)
-        QuestDifficulty.HARD -> Color(0xFFEF5350)
+    val gradientBorder = when (quest.difficulty) {
+            QuestDifficulty.EASY -> Brush.linearGradient(listOf(Color(0xFF81C784), Color(0xFFA5D6A7)))
+            QuestDifficulty.MEDIUM -> Brush.linearGradient(listOf(Color(0xFFFFF176), Color(0xFFFFD54F)))
+            QuestDifficulty.HARD -> Brush.linearGradient(listOf(Color(0xFFE57373), Color(0xFFEF5350)))
+            QuestDifficulty.EPIC -> Brush.linearGradient(listOf(Color(0xFFBA68C8), Color(0xFF9C27B0)))
     }
 
     val parchmentTexture: Painter = painterResource(R.drawable.parchment_texture)
@@ -113,7 +109,7 @@ fun QuestItemCard(
                     Box(
                         modifier = Modifier
                             .size(8.dp)
-                            .background(difficultyColor, shape = CircleShape)
+                            .background(questTypeIndicator, shape = CircleShape)
                     )
                 }
             }

@@ -14,6 +14,5 @@ data class QuestEntity(
     val type: QuestType,
     val isAccepted: Boolean = false,
     val isCompleted: Boolean = false,
-    val difficulty: QuestDifficulty,
-    val xp: Int
+    val difficulty: QuestDifficulty
 )

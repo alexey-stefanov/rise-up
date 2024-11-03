@@ -24,12 +24,26 @@ class CharacterRepositoryImpl @Inject constructor(
     override suspend fun initializeCharacterIfNeeded() {
         val characterExists = characterDao.getCharacter().firstOrNull() != null
         if (!characterExists) {
-            val newCharacter = CharacterEntity(id = 1, level = 1, currentXp = 0, xpForNextLevel = 100)
-            characterDao.insertOrUpdateCharacter(newCharacter)
+            val newCharacter = getNewCharacterEntity()
+            characterDao.insertCharacter(newCharacter)
         }
     }
 
-    override suspend fun insertOrUpdateCharacter(character: Character) {
-        characterDao.insertOrUpdateCharacter(CharacterMapper.toEntity(character))
+    override suspend fun insertCharacter(character: Character) {
+        characterDao.insertCharacter(CharacterMapper.toEntity(character))
+    }
+
+    override suspend fun updateCharacter(level: Int, xp: Int, xpForNextLevel: Int) {
+        val updatedCharacter = getNewCharacterEntity(level, xp, xpForNextLevel)
+        characterDao.updateCharacter(updatedCharacter)
+    }
+
+    private fun getNewCharacterEntity(level: Int = 1, currentXp: Int = 0, xpForNextLevel: Int = 100): CharacterEntity {
+        return CharacterEntity(
+            id = 1,
+            level = level,
+            currentXp = currentXp,
+            xpForNextLevel = xpForNextLevel
+        )
     }
 }

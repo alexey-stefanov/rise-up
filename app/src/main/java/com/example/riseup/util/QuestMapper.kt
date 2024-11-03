@@ -12,7 +12,6 @@ object QuestMapper {
             description = entity.description,
             type = entity.type,
             difficulty = entity.difficulty,
-            xp = entity.xp,
             isAccepted = entity.isAccepted,
             isCompleted = entity.isCompleted
         )
@@ -25,7 +24,6 @@ object QuestMapper {
             description = model.description,
             type = model.type,
             difficulty = model.difficulty,
-            xp = model.xp,
             isAccepted = model.isAccepted,
             isCompleted = model.isCompleted
         )

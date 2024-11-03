@@ -146,7 +146,7 @@ fun QuestListScreen(viewModel: QuestViewModel = hiltViewModel()) {
                                     viewModel.completeQuest(quest)
                                     Toast.makeText(
                                         context,
-                                        context.getString(R.string.quest_completed, quest.xp),
+                                        context.getString(R.string.quest_completed, quest.difficulty.xp),
                                         Toast.LENGTH_SHORT
                                     ).show()
                                     selectedQuest = null
