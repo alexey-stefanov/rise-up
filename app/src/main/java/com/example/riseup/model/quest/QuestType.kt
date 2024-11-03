@@ -1,4 +1,4 @@
-package com.example.riseup.data.model.quest
+package com.example.riseup.model.quest
 
 enum class QuestType {
     DAILY, REGULAR

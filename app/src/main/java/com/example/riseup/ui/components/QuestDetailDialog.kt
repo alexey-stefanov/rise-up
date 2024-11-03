@@ -1,4 +1,4 @@
-package com.example.riseup.ui.screens.quest_list
+package com.example.riseup.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,9 +18,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.example.riseup.data.model.quest.Quest
+import com.example.riseup.model.quest.Quest
 import com.example.riseup.R
-import com.example.riseup.data.model.quest.QuestType
+import com.example.riseup.model.quest.QuestType
 
 @Composable
 fun QuestDetailDialog(

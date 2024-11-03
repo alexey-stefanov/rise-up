@@ -1,4 +1,4 @@
-package com.example.riseup.data.model.quest
+package com.example.riseup.model.quest
 
 enum class QuestDifficulty {
     EASY, MEDIUM, HARD

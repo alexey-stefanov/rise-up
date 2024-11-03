@@ -1,4 +1,4 @@
-package com.example.riseup.ui.screens.quest_list
+package com.example.riseup.ui.screen.questlist
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
@@ -25,8 +25,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -36,16 +36,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.riseup.R
-import com.example.riseup.data.model.quest.Quest
-import com.example.riseup.ui.screens.character_screen.CharacterScreen
+import com.example.riseup.model.quest.Quest
+import com.example.riseup.ui.components.AddQuestDialog
+import com.example.riseup.ui.components.ExperienceBar
+import com.example.riseup.ui.components.QuestDetailDialog
+import com.example.riseup.ui.components.QuestItemCard
+import com.example.riseup.ui.components.QuestListHeader
+import com.example.riseup.ui.screen.character.CharacterScreen
+import com.example.riseup.viewmodel.QuestViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QuestListScreen(viewModel: QuestViewModel = viewModel()) {
-    val quests by remember { derivedStateOf { viewModel.quests } }
+fun QuestListScreen(viewModel: QuestViewModel = hiltViewModel()) {
+    val quests by viewModel.quests.observeAsState(emptyList())
+    val character by viewModel.character.observeAsState()
     var selectedQuest by remember { mutableStateOf<Quest?>(null) }
     var showAddDialog by remember { mutableStateOf(false) }
     var showCharacterScreen by remember { mutableStateOf(false) }
@@ -83,8 +90,7 @@ fun QuestListScreen(viewModel: QuestViewModel = viewModel()) {
         content = {
             if (showCharacterScreen) {
                 CharacterScreen(
-                    onBack = { showCharacterScreen = false },
-                    character = viewModel.character
+                    onBack = { showCharacterScreen = false }
                 )
             } else {
                 Scaffold(
@@ -111,6 +117,9 @@ fun QuestListScreen(viewModel: QuestViewModel = viewModel()) {
                     ) {
                         Column {
                             QuestListHeader()
+                            character?.let {
+                                ExperienceBar(progress = viewModel.getExperienceProgress())
+                            }
                             LazyColumn {
                                 items(quests) { quest ->
                                     QuestItemCard(
@@ -159,8 +168,8 @@ fun QuestListScreen(viewModel: QuestViewModel = viewModel()) {
 
                         if (showAddDialog) {
                             AddQuestDialog(
-                                onAddQuest = { questName, difficulty ->
-                                    viewModel.addQuest(questName, difficulty)
+                                onAddQuest = { questName, questDifficulty ->
+                                    viewModel.addNewQuest(questName, questDifficulty)
                                     showAddDialog = false
                                 },
                                 onDismiss = { showAddDialog = false }

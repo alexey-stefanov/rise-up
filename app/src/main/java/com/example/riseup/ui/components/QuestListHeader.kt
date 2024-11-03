@@ -1,4 +1,4 @@
-package com.example.riseup.ui.screens.quest_list
+package com.example.riseup.ui.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
