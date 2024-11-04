@@ -45,10 +45,11 @@ class QuestViewModel @Inject constructor(
         return currentXp.toFloat() / xpForNextLevel.toFloat()
     }
 
-    fun addNewQuest(name: String, difficulty: QuestDifficulty) {
+    fun addNewQuest(name: String, description: String, difficulty: QuestDifficulty) {
         val newQuest = Quest(
             id = 0,
             name = name,
+            description = description,
             difficulty = difficulty,
             type = QuestType.REGULAR,
             state = QuestState.New

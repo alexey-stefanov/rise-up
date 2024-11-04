@@ -18,8 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.example.riseup.model.quest.Quest
 import com.example.riseup.R
+import com.example.riseup.model.quest.Quest
 import com.example.riseup.model.quest.QuestState
 import com.example.riseup.model.quest.QuestType
 
@@ -48,7 +48,11 @@ fun QuestDetailDialog(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = quest.description ?: stringResource(R.string.description_missing),
+                    text = if (quest.description.isNotBlank()) {
+                        quest.description
+                    } else {
+                        stringResource(R.string.description_missing)
+                    },
                     style = MaterialTheme.typography.bodyMedium
                 )
 
@@ -65,19 +69,19 @@ fun QuestDetailDialog(
                     modifier = Modifier.fillMaxWidth()
                 ) {
 
-                    if(quest.type == QuestType.REGULAR && quest.state == QuestState.New) {
+                    if (quest.type == QuestType.REGULAR && quest.state == QuestState.New) {
                         TextButton(onClick = { onAcceptQuest() }) {
                             Text(stringResource(R.string.accept))
                         }
                     }
 
-                    if(quest.type == QuestType.REGULAR && quest.state == QuestState.Accepted) {
+                    if (quest.type == QuestType.REGULAR && quest.state == QuestState.Accepted) {
                         TextButton(onClick = { onDeclineQuest() }) {
                             Text(stringResource(R.string.decline))
                         }
                     }
 
-                    if(quest.state == QuestState.Accepted) {
+                    if (quest.state == QuestState.Accepted) {
                         TextButton(onClick = { onCompleteQuest() }) {
                             Text(stringResource(R.string.completed))
                         }

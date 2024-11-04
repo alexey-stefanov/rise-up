@@ -11,7 +11,7 @@ data class QuestEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val name: String,
-    val description: String?,
+    val description: String,
     val type: QuestType,
     val difficulty: QuestDifficulty,
     val state: QuestState

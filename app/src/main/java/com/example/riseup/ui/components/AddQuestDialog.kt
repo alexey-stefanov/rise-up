@@ -32,10 +32,11 @@ import com.example.riseup.model.quest.QuestDifficulty
 
 @Composable
 fun AddQuestDialog(
-    onAddQuest: (String, QuestDifficulty) -> Unit,
+    onAddQuest: (String, String, QuestDifficulty) -> Unit,
     onDismiss: () -> Unit
 ) {
     var questName by remember { mutableStateOf("") }
+    var questDescription by remember { mutableStateOf("") }
     var selectedDifficulty by remember { mutableStateOf(QuestDifficulty.EASY) }
 
     Dialog(onDismissRequest = { onDismiss() }) {
@@ -56,6 +57,14 @@ fun AddQuestDialog(
                     value = questName,
                     onValueChange = { questName = it },
                     label = { Text(stringResource(R.string.quest_name)) },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                OutlinedTextField(
+                    value = questDescription,
+                    onValueChange = { questDescription = it },
+                    label = { Text(stringResource(R.string.description)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -92,7 +101,7 @@ fun AddQuestDialog(
                     }
                     TextButton(onClick = {
                         if(questName.isNotBlank()) {
-                            onAddQuest(questName, selectedDifficulty)
+                            onAddQuest(questName, questDescription, selectedDifficulty)
                         }
                     }) {
                         Text(stringResource(R.string.add))

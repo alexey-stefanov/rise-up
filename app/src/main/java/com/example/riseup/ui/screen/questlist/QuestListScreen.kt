@@ -187,8 +187,8 @@ fun QuestListScreen(viewModel: QuestViewModel = hiltViewModel()) {
 
                         if (showAddDialog) {
                             AddQuestDialog(
-                                onAddQuest = { questName, questDifficulty ->
-                                    viewModel.addNewQuest(questName, questDifficulty)
+                                onAddQuest = { questName, questDescription, questDifficulty ->
+                                    viewModel.addNewQuest(questName, questDescription, questDifficulty)
                                     showAddDialog = false
                                 },
                                 onDismiss = { showAddDialog = false }
