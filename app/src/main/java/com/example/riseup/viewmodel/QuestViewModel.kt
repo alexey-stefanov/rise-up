@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.riseup.model.character.Character
 import com.example.riseup.model.quest.Quest
 import com.example.riseup.model.quest.QuestDifficulty
+import com.example.riseup.model.quest.QuestState
 import com.example.riseup.model.quest.QuestType
 import com.example.riseup.repository.CharacterRepository
-import com.example.riseup.repository.CompletedQuestRepository
 import com.example.riseup.repository.QuestRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,10 +19,9 @@ import kotlin.math.pow
 @HiltViewModel
 class QuestViewModel @Inject constructor(
     private val questRepository: QuestRepository,
-    private val characterRepository: CharacterRepository,
-    private val completedQuestRepository: CompletedQuestRepository
+    private val characterRepository: CharacterRepository
 ) : ViewModel() {
-    val quests: LiveData<List<Quest>> = questRepository.getAllQuests().asLiveData()
+    val quests: LiveData<List<Quest>> = questRepository.getActiveQuests().asLiveData()
     val character: LiveData<Character?> = characterRepository.getCharacter().asLiveData()
 
     init {
@@ -52,8 +51,7 @@ class QuestViewModel @Inject constructor(
             name = name,
             difficulty = difficulty,
             type = QuestType.REGULAR,
-            isCompleted = false,
-            isAccepted = false
+            state = QuestState.New
         )
         viewModelScope.launch {
             questRepository.insertQuest(newQuest)
@@ -62,22 +60,19 @@ class QuestViewModel @Inject constructor(
 
     fun acceptQuest(quest: Quest) {
         viewModelScope.launch {
-            questRepository.updateQuest(quest.copy(isAccepted = true))
+            questRepository.updateQuest(quest.copy(state = QuestState.Accepted))
         }
     }
 
     fun declineQuest(quest: Quest) {
         viewModelScope.launch {
-            questRepository.updateQuest(quest.copy(isAccepted = false))
+            questRepository.updateQuest(quest.copy(state = QuestState.New))
         }
     }
 
     fun completeQuest(quest: Quest) {
         character.value?.let {
             viewModelScope.launch {
-                questRepository.deleteQuest(quest)
-                completedQuestRepository.addCompletedQuest(quest)
-
                 val xpGained = quest.difficulty.xp
 
                 var newLevel = it.level
@@ -90,6 +85,7 @@ class QuestViewModel @Inject constructor(
                     xpForNextLevel = calculateXpForNextLevel(newLevel)
                 }
 
+                questRepository.updateQuest(quest.copy(state = QuestState.Completed(System.currentTimeMillis())))
                 characterRepository.updateCharacter(newLevel, newXp, xpForNextLevel)
             }
         }

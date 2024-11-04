@@ -5,7 +5,6 @@ data class Quest(
     val name: String,
     val description: String? = null,
     val type: QuestType,
-    var isAccepted: Boolean = false,
-    var isCompleted: Boolean = false,
-    val difficulty: QuestDifficulty
+    val difficulty: QuestDifficulty,
+    var state: QuestState = QuestState.New
 )

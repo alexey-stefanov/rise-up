@@ -1,7 +1,6 @@
 package com.example.riseup.util
 
 import com.example.riseup.data.local.entities.QuestEntity
-import com.example.riseup.model.quest.CompletedQuest
 import com.example.riseup.model.quest.Quest
 
 object QuestMapper {
@@ -13,8 +12,7 @@ object QuestMapper {
             description = entity.description,
             type = entity.type,
             difficulty = entity.difficulty,
-            isAccepted = entity.isAccepted,
-            isCompleted = entity.isCompleted
+            state = entity.state
         )
     }
 
@@ -25,19 +23,7 @@ object QuestMapper {
             description = model.description,
             type = model.type,
             difficulty = model.difficulty,
-            isAccepted = model.isAccepted,
-            isCompleted = model.isCompleted
-        )
-    }
-
-    fun toCompletedQuest(quest: Quest): CompletedQuest {
-        return CompletedQuest(
-            id = quest.id,
-            name = quest.name,
-            description = quest.description,
-            type = quest.type,
-            difficulty = quest.difficulty,
-            completionDate = System.currentTimeMillis()
+            state = model.state
         )
     }
 }

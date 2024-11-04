@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import com.example.riseup.model.quest.Quest
 import com.example.riseup.model.quest.QuestDifficulty
+import com.example.riseup.model.quest.QuestState
 import com.example.riseup.model.quest.QuestType
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -30,11 +31,11 @@ class DailyQuestManager @Inject constructor(
 
     fun getDailyQuests(): List<Quest> {
         return listOf(
-            Quest(id = 0, name = "Сделать зарядку", type = QuestType.DAILY, difficulty = QuestDifficulty.EASY),
-            Quest(id = 0, name = "Прочитать книгу", type = QuestType.DAILY, difficulty = QuestDifficulty.MEDIUM),
-            Quest(id = 0, name = "Медитировать", type = QuestType.DAILY, difficulty = QuestDifficulty.EASY),
-            Quest(id = 0, name = "Сходить на пробежку", type = QuestType.DAILY, difficulty = QuestDifficulty.HARD),
-            Quest(id = 0, name = "Выпить воды", type = QuestType.DAILY, difficulty = QuestDifficulty.MEDIUM)
+            Quest(id = 0, name = "Сделать зарядку", type = QuestType.DAILY, difficulty = QuestDifficulty.EASY, state = QuestState.Accepted),
+            Quest(id = 0, name = "Прочитать книгу", type = QuestType.DAILY, difficulty = QuestDifficulty.MEDIUM, state = QuestState.Accepted),
+            Quest(id = 0, name = "Медитировать", type = QuestType.DAILY, difficulty = QuestDifficulty.EASY, state = QuestState.Accepted),
+            Quest(id = 0, name = "Сходить на пробежку", type = QuestType.DAILY, difficulty = QuestDifficulty.HARD, state = QuestState.Accepted),
+            Quest(id = 0, name = "Выпить воды", type = QuestType.DAILY, difficulty = QuestDifficulty.MEDIUM, state = QuestState.Accepted)
         )
     }
 

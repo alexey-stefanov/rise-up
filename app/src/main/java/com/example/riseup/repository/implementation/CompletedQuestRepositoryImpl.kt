@@ -1,10 +1,8 @@
 package com.example.riseup.repository.implementation
 
-import com.example.riseup.data.local.dao.CompletedQuestDao
-import com.example.riseup.model.quest.CompletedQuest
+import com.example.riseup.data.local.dao.QuestDao
 import com.example.riseup.model.quest.Quest
 import com.example.riseup.repository.CompletedQuestRepository
-import com.example.riseup.util.CompletedQuestMapper
 import com.example.riseup.util.QuestMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -13,17 +11,13 @@ import javax.inject.Singleton
 
 @Singleton
 class CompletedQuestRepositoryImpl @Inject constructor(
-    private val completedQuestDao: CompletedQuestDao
+    private val questDao: QuestDao
 ) : CompletedQuestRepository {
-    override fun getCompletedQuests(): Flow<List<CompletedQuest>> {
-        return completedQuestDao.getCompletedQuests().map { entities ->
-            entities.map { CompletedQuestMapper.fromEntity(it) }
+    override fun getCompletedQuests(): Flow<List<Quest>> {
+        return questDao.getCompletedQuests().map { entities ->
+            entities.map {
+                QuestMapper.fromEntity(it)
+            }.reversed()
         }
-    }
-
-    override suspend fun addCompletedQuest(quest: Quest) {
-        val completedQuest = QuestMapper.toCompletedQuest(quest)
-        val completedQuestEntity = CompletedQuestMapper.toEntity(completedQuest)
-        completedQuestDao.insertCompletedQuest(completedQuestEntity)
     }
 }

@@ -15,8 +15,8 @@ class QuestRepositoryImpl @Inject constructor(
     private val questDao: QuestDao,
     private val dailyQuestManager: DailyQuestManager
 ) : QuestRepository {
-    override fun getAllQuests(): Flow<List<Quest>> {
-        return questDao.getAllQuests().map { entities ->
+    override fun getActiveQuests(): Flow<List<Quest>> {
+        return questDao.getActiveQuests().map { entities ->
             entities.map { QuestMapper.fromEntity(it) }
         }
     }

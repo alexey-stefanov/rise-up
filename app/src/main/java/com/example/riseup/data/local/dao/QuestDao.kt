@@ -11,8 +11,11 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface QuestDao {
-    @Query("SELECT * FROM quests")
-    fun getAllQuests(): Flow<List<QuestEntity>>
+    @Query("SELECT * FROM quests WHERE state IN ('new', 'accepted')")
+    fun getActiveQuests(): Flow<List<QuestEntity>>
+
+    @Query("SELECT * FROM quests WHERE state LIKE '{%'")
+    fun getCompletedQuests(): Flow<List<QuestEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertQuest(quest: QuestEntity)

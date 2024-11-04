@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.riseup.model.quest.Quest
 import com.example.riseup.R
+import com.example.riseup.model.quest.QuestState
 import com.example.riseup.model.quest.QuestType
 
 @Composable
@@ -64,19 +65,19 @@ fun QuestDetailDialog(
                     modifier = Modifier.fillMaxWidth()
                 ) {
 
-                    if(quest.type == QuestType.REGULAR && !quest.isAccepted && !quest.isCompleted) {
+                    if(quest.type == QuestType.REGULAR && quest.state == QuestState.New) {
                         TextButton(onClick = { onAcceptQuest() }) {
                             Text(stringResource(R.string.accept))
                         }
                     }
 
-                    if(quest.type == QuestType.REGULAR && quest.isAccepted && !quest.isCompleted) {
+                    if(quest.type == QuestType.REGULAR && quest.state == QuestState.Accepted) {
                         TextButton(onClick = { onDeclineQuest() }) {
                             Text(stringResource(R.string.decline))
                         }
                     }
 
-                    if(!quest.isCompleted && quest.isAccepted || quest.type == QuestType.DAILY) {
+                    if(quest.state == QuestState.Accepted) {
                         TextButton(onClick = { onCompleteQuest() }) {
                             Text(stringResource(R.string.completed))
                         }
