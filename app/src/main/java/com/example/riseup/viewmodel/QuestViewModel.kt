@@ -9,6 +9,7 @@ import com.example.riseup.model.quest.Quest
 import com.example.riseup.model.quest.QuestDifficulty
 import com.example.riseup.model.quest.QuestType
 import com.example.riseup.repository.CharacterRepository
+import com.example.riseup.repository.CompletedQuestRepository
 import com.example.riseup.repository.QuestRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,7 +19,8 @@ import kotlin.math.pow
 @HiltViewModel
 class QuestViewModel @Inject constructor(
     private val questRepository: QuestRepository,
-    private val characterRepository: CharacterRepository
+    private val characterRepository: CharacterRepository,
+    private val completedQuestRepository: CompletedQuestRepository
 ) : ViewModel() {
     val quests: LiveData<List<Quest>> = questRepository.getAllQuests().asLiveData()
     val character: LiveData<Character?> = characterRepository.getCharacter().asLiveData()
@@ -60,20 +62,21 @@ class QuestViewModel @Inject constructor(
 
     fun acceptQuest(quest: Quest) {
         viewModelScope.launch {
-            questRepository.acceptQuest(quest)
+            questRepository.updateQuest(quest.copy(isAccepted = true))
         }
     }
 
     fun declineQuest(quest: Quest) {
         viewModelScope.launch {
-            questRepository.declineQuest(quest)
+            questRepository.updateQuest(quest.copy(isAccepted = false))
         }
     }
 
     fun completeQuest(quest: Quest) {
         character.value?.let {
             viewModelScope.launch {
-                questRepository.completeQuest(quest)
+                questRepository.deleteQuest(quest)
+                completedQuestRepository.addCompletedQuest(quest)
 
                 val xpGained = quest.difficulty.xp
 

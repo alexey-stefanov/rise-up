@@ -22,4 +22,5 @@
     <string name="achievements">Достижения</string>
     <string name="no_achievements">Нет достижений</string>
     <string name="back">Назад</string>
+    <string name="quest_history">История квестов</string>
 </resources>

@@ -25,12 +25,12 @@ class QuestRepositoryImpl @Inject constructor(
         questDao.insertQuest(QuestMapper.toEntity(quest))
     }
 
-    override suspend fun deleteQuest(quest: Quest) {
-        questDao.deleteQuest(QuestMapper.toEntity(quest))
-    }
-
     override suspend fun updateQuest(quest: Quest) {
         questDao.updateQuest(QuestMapper.toEntity(quest))
+    }
+
+    override suspend fun deleteQuest(quest: Quest) {
+        questDao.deleteQuest(QuestMapper.toEntity(quest))
     }
 
     override suspend fun initializeDailyQuests() {
@@ -43,17 +43,5 @@ class QuestRepositoryImpl @Inject constructor(
             val newDailyQuests = dailyQuestManager.getDailyQuests()
             newDailyQuests.forEach { insertQuest(it) }
         }
-    }
-
-    override suspend fun acceptQuest(quest: Quest) {
-        updateQuest(quest.copy(isAccepted = true))
-    }
-
-    override suspend fun declineQuest(quest: Quest) {
-        updateQuest(quest.copy(isAccepted = false))
-    }
-
-    override suspend fun completeQuest(quest: Quest) {
-        deleteQuest(quest)
     }
 }

@@ -45,6 +45,7 @@ import com.example.riseup.ui.components.QuestDetailDialog
 import com.example.riseup.ui.components.QuestItemCard
 import com.example.riseup.ui.components.QuestListHeader
 import com.example.riseup.ui.screen.character.CharacterScreen
+import com.example.riseup.ui.screen.completedquestlist.QuestHistoryScreen
 import com.example.riseup.viewmodel.QuestViewModel
 import kotlinx.coroutines.launch
 
@@ -56,6 +57,7 @@ fun QuestListScreen(viewModel: QuestViewModel = hiltViewModel()) {
     var selectedQuest by remember { mutableStateOf<Quest?>(null) }
     var showAddDialog by remember { mutableStateOf(false) }
     var showCharacterScreen by remember { mutableStateOf(false) }
+    var showQuestHistoryScreen by remember { mutableStateOf(false) }
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
 
@@ -84,6 +86,19 @@ fun QuestListScreen(viewModel: QuestViewModel = hiltViewModel()) {
                         },
                         modifier = Modifier.padding(16.dp)
                     )
+                    HorizontalDivider()
+                    NavigationDrawerItem(
+                        label = { Text(stringResource(R.string.quest_history)) },
+                        selected = false,
+                        onClick = {
+                            coroutineScope.launch {
+                                drawerState.close()
+                                showQuestHistoryScreen = true
+                            }
+
+                        },
+                        modifier = Modifier.padding(16.dp)
+                    )
                 }
             }
         },
@@ -91,6 +106,10 @@ fun QuestListScreen(viewModel: QuestViewModel = hiltViewModel()) {
             if (showCharacterScreen) {
                 CharacterScreen(
                     onBack = { showCharacterScreen = false }
+                )
+            } else if (showQuestHistoryScreen) {
+                QuestHistoryScreen(
+                    onBack = { showQuestHistoryScreen = false }
                 )
             } else {
                 Scaffold(
