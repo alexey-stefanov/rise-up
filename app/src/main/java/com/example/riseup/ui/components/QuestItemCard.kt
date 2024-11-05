@@ -14,29 +14,27 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.riseup.R
 import com.example.riseup.model.quest.Quest
 import com.example.riseup.model.quest.QuestDifficulty
+import com.example.riseup.model.quest.QuestState
 import com.example.riseup.model.quest.QuestType
+import com.example.riseup.ui.theme.Blue
+import com.example.riseup.ui.theme.Gray
+import com.example.riseup.ui.theme.Green
+import com.example.riseup.ui.theme.Purple
 
 @Composable
 fun QuestItemCard(
@@ -44,57 +42,54 @@ fun QuestItemCard(
     onCardClick: () -> Unit
 ) {
 
-    val questTypeIndicator = when (quest.type) {
-        QuestType.DAILY -> Color(0xFF42A5F5)
-        QuestType.REGULAR -> Color(0xFFFFD700)
+    val questTypeIndicator = when (quest.difficulty) {
+        QuestDifficulty.EASY -> Gray
+        QuestDifficulty.MEDIUM -> Green
+        QuestDifficulty.HARD -> Blue
+        QuestDifficulty.EPIC -> Purple
     }
 
-    val gradientBorder = when (quest.difficulty) {
-            QuestDifficulty.EASY -> Brush.linearGradient(listOf(Color(0xFF81C784), Color(0xFFA5D6A7)))
-            QuestDifficulty.MEDIUM -> Brush.linearGradient(listOf(Color(0xFFFFF176), Color(0xFFFFD54F)))
-            QuestDifficulty.HARD -> Brush.linearGradient(listOf(Color(0xFFE57373), Color(0xFFEF5350)))
-            QuestDifficulty.EPIC -> Brush.linearGradient(listOf(Color(0xFFBA68C8), Color(0xFF9C27B0)))
-    }
+    val questIcon = when {
+        quest.state == QuestState.New ->
+            painterResource(R.drawable.exclamation_mark)
 
-    val parchmentTexture: Painter = painterResource(R.drawable.parchment_texture)
+        quest.state == QuestState.Accepted && quest.type == QuestType.DAILY ->
+            painterResource(R.drawable.question_mark_dark_green)
+
+        quest.state == QuestState.Accepted && quest.type == QuestType.REGULAR ->
+            painterResource(R.drawable.question_mark_gold)
+
+        else -> painterResource(R.drawable.thumb_up)
+    }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .background(gradientBorder)
             .clip(RoundedCornerShape(12.dp))
             .clickable { onCardClick() },
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        )
     ) {
         Box(
             modifier = Modifier
-                .background(brush = gradientBorder)
                 .padding(2.dp)
                 .clip(RoundedCornerShape(12.dp))
         ) {
-            Image(
-                painter = parchmentTexture,
-                contentDescription = null,
-                modifier = Modifier.matchParentSize(),
-                contentScale = ContentScale.Crop
-            )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                Icon(
-                    imageVector = when (quest.type) {
-                        QuestType.DAILY -> Icons.Default.Star
-                        QuestType.REGULAR -> Icons.Default.Face
-                    },
+                Image(
+                    painter = questIcon,
                     contentDescription = null,
-                    modifier = Modifier.size(40.dp),
-                    tint = Color.Gray
+                    modifier = Modifier.size(40.dp)
                 )
 
                 Spacer(modifier = Modifier.width(12.dp))

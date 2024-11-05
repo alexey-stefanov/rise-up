@@ -3,7 +3,10 @@ package com.example.riseup.ui.screen.questlist
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -43,7 +46,6 @@ import com.example.riseup.ui.components.AddQuestDialog
 import com.example.riseup.ui.components.ExperienceBar
 import com.example.riseup.ui.components.QuestDetailDialog
 import com.example.riseup.ui.components.QuestItemCard
-import com.example.riseup.ui.components.QuestListHeader
 import com.example.riseup.ui.screen.character.CharacterScreen
 import com.example.riseup.ui.screen.completedquestlist.QuestHistoryScreen
 import com.example.riseup.viewmodel.QuestViewModel
@@ -66,7 +68,13 @@ fun QuestListScreen(viewModel: QuestViewModel = hiltViewModel()) {
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet {
+            ModalDrawerSheet(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(end = 32.dp),
+                drawerContainerColor = MaterialTheme.colorScheme.surface,
+                drawerContentColor = MaterialTheme.colorScheme.onSurface
+            ) {
                 Column {
                     Text(
                         text = stringResource(R.string.menu),
@@ -115,7 +123,7 @@ fun QuestListScreen(viewModel: QuestViewModel = hiltViewModel()) {
                 Scaffold(
                     topBar = {
                         TopAppBar(
-                            title = { Text("") },
+                            title = { Text(stringResource(R.string.quests)) },
                             navigationIcon = {
                                 IconButton(onClick = {
                                     coroutineScope.launch { drawerState.open() }
@@ -135,9 +143,14 @@ fun QuestListScreen(viewModel: QuestViewModel = hiltViewModel()) {
                             .padding(paddingValues)
                     ) {
                         Column {
-                            QuestListHeader()
                             character?.let {
-                                ExperienceBar(progress = viewModel.getExperienceProgress())
+                                ExperienceBar(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(28.dp)
+                                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                                    progress = viewModel.getExperienceProgress()
+                                )
                             }
                             LazyColumn {
                                 items(quests) { quest ->
@@ -165,7 +178,10 @@ fun QuestListScreen(viewModel: QuestViewModel = hiltViewModel()) {
                                     viewModel.completeQuest(quest)
                                     Toast.makeText(
                                         context,
-                                        context.getString(R.string.quest_completed, quest.difficulty.xp),
+                                        context.getString(
+                                            R.string.quest_completed,
+                                            quest.difficulty.xp
+                                        ),
                                         Toast.LENGTH_SHORT
                                     ).show()
                                     selectedQuest = null
@@ -175,6 +191,8 @@ fun QuestListScreen(viewModel: QuestViewModel = hiltViewModel()) {
 
                         FloatingActionButton(
                             onClick = { showAddDialog = true },
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier
                                 .align(Alignment.BottomEnd)
                                 .padding(16.dp)
@@ -188,7 +206,11 @@ fun QuestListScreen(viewModel: QuestViewModel = hiltViewModel()) {
                         if (showAddDialog) {
                             AddQuestDialog(
                                 onAddQuest = { questName, questDescription, questDifficulty ->
-                                    viewModel.addNewQuest(questName, questDescription, questDifficulty)
+                                    viewModel.addNewQuest(
+                                        questName,
+                                        questDescription,
+                                        questDifficulty
+                                    )
                                     showAddDialog = false
                                 },
                                 onDismiss = { showAddDialog = false }

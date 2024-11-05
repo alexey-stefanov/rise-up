@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">RiseUp</string>
-    <string name="daily_quests">Ежедневные квесты</string>
+    <string name="quests">Задания</string>
     <string name="add_quest">Добавить задание</string>
     <string name="delete_quest">Удалить задание</string>
     <string name="active_quest">Активное задание</string>
@@ -23,5 +23,5 @@
     <string name="achievements">Достижения</string>
     <string name="no_achievements">Нет достижений</string>
     <string name="back">Назад</string>
-    <string name="quest_history">История квестов</string>
+    <string name="quest_history">История заданий</string>
 </resources>
