@@ -25,8 +25,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.riseup.R
 import com.example.riseup.model.quest.Quest
 import com.example.riseup.ui.components.CompletedQuestsDateHeader
-import com.example.riseup.ui.components.QuestDetailDialog
-import com.example.riseup.ui.components.QuestItemCard
+import com.example.riseup.ui.components.EmptyDataPlaceholder
+import com.example.riseup.ui.components.dialogs.QuestDetailDialog
+import com.example.riseup.ui.components.cards.QuestItemCard
 import com.example.riseup.viewmodel.CompletedQuestViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,6 +39,7 @@ fun QuestHistoryScreen(
     val groupedCompletedQuests by viewModel.groupedCompletedQuests.observeAsState(emptyMap())
     var selectedQuest by remember { mutableStateOf<Quest?>(null) }
 
+    // TODO Move to a RiseUpTopAppBar
     Scaffold(
         topBar = {
             TopAppBar(
@@ -58,16 +60,20 @@ fun QuestHistoryScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                LazyColumn {
-                    groupedCompletedQuests.forEach { (date, quests) ->
-                        item {
-                            CompletedQuestsDateHeader(date)
-                        }
-                        items(quests) { quest ->
-                            QuestItemCard(
-                                quest = quest,
-                                onCardClick = { selectedQuest = quest }
-                            )
+                if (groupedCompletedQuests.values.isEmpty()) {
+                    EmptyDataPlaceholder(stringResource(R.string.no_completed_quests))
+                } else {
+                    LazyColumn {
+                        groupedCompletedQuests.forEach { (date, quests) ->
+                            item {
+                                CompletedQuestsDateHeader(date)
+                            }
+                            items(quests) { quest ->
+                                QuestItemCard(
+                                    quest = quest,
+                                    onCardClick = { selectedQuest = quest }
+                                )
+                            }
                         }
                     }
                 }

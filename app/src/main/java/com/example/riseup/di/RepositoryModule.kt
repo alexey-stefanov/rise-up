@@ -1,8 +1,10 @@
 package com.example.riseup.di
 
+import com.example.riseup.repository.AchievementRepository
 import com.example.riseup.repository.CharacterRepository
 import com.example.riseup.repository.CompletedQuestRepository
 import com.example.riseup.repository.QuestRepository
+import com.example.riseup.repository.implementation.AchievementRepositoryImpl
 import com.example.riseup.repository.implementation.CharacterRepositoryImpl
 import com.example.riseup.repository.implementation.CompletedQuestRepositoryImpl
 import com.example.riseup.repository.implementation.QuestRepositoryImpl
@@ -33,4 +35,10 @@ abstract class RepositoryModule {
     abstract fun bindCompletedQuestRepository(
         completedQuestRepositoryImpl: CompletedQuestRepositoryImpl
     ): CompletedQuestRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindAchievementRepository(
+        achievementRepositoryImpl: AchievementRepositoryImpl
+    ): AchievementRepository
 }

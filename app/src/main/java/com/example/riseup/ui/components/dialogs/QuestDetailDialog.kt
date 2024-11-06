@@ -1,4 +1,4 @@
-package com.example.riseup.ui.components
+package com.example.riseup.ui.components.dialogs
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -83,7 +83,7 @@ fun QuestDetailDialog(
 
                     if (quest.state == QuestState.Accepted) {
                         TextButton(onClick = { onCompleteQuest() }) {
-                            Text(stringResource(R.string.completed))
+                            Text(stringResource(R.string.complete))
                         }
                     }
                 }

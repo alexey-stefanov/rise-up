@@ -1,16 +1,17 @@
 package com.example.riseup.ui.screen.questlist
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
@@ -42,10 +43,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.riseup.R
 import com.example.riseup.model.quest.Quest
-import com.example.riseup.ui.components.AddQuestDialog
+import com.example.riseup.ui.components.dialogs.AddQuestDialog
 import com.example.riseup.ui.components.ExperienceBar
-import com.example.riseup.ui.components.QuestDetailDialog
-import com.example.riseup.ui.components.QuestItemCard
+import com.example.riseup.ui.components.dialogs.QuestDetailDialog
+import com.example.riseup.ui.components.QuestGrid
+import com.example.riseup.ui.components.QuestList
+import com.example.riseup.ui.components.icons.Grid
+import com.example.riseup.ui.screen.achievementscreen.AchievementsScreen
 import com.example.riseup.ui.screen.character.CharacterScreen
 import com.example.riseup.ui.screen.completedquestlist.QuestHistoryScreen
 import com.example.riseup.viewmodel.QuestViewModel
@@ -56,15 +60,19 @@ import kotlinx.coroutines.launch
 fun QuestListScreen(viewModel: QuestViewModel = hiltViewModel()) {
     val quests by viewModel.quests.observeAsState(emptyList())
     val character by viewModel.character.observeAsState()
+    val achievements by viewModel.achievements.observeAsState()
     var selectedQuest by remember { mutableStateOf<Quest?>(null) }
     var showAddDialog by remember { mutableStateOf(false) }
     var showCharacterScreen by remember { mutableStateOf(false) }
     var showQuestHistoryScreen by remember { mutableStateOf(false) }
+    var showAchievementsScreen by remember { mutableStateOf(false) }
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
+    var isGridView by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
 
+    // TODO Notifications and toasts
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -94,6 +102,7 @@ fun QuestListScreen(viewModel: QuestViewModel = hiltViewModel()) {
                         },
                         modifier = Modifier.padding(16.dp)
                     )
+                    // TODO move to another file MenuItem
                     HorizontalDivider()
                     NavigationDrawerItem(
                         label = { Text(stringResource(R.string.quest_history)) },
@@ -102,6 +111,19 @@ fun QuestListScreen(viewModel: QuestViewModel = hiltViewModel()) {
                             coroutineScope.launch {
                                 drawerState.close()
                                 showQuestHistoryScreen = true
+                            }
+
+                        },
+                        modifier = Modifier.padding(16.dp)
+                    )
+                    HorizontalDivider()
+                    NavigationDrawerItem(
+                        label = { Text(stringResource(R.string.achievements)) },
+                        selected = false,
+                        onClick = {
+                            coroutineScope.launch {
+                                drawerState.close()
+                                showAchievementsScreen = true
                             }
 
                         },
@@ -118,6 +140,10 @@ fun QuestListScreen(viewModel: QuestViewModel = hiltViewModel()) {
             } else if (showQuestHistoryScreen) {
                 QuestHistoryScreen(
                     onBack = { showQuestHistoryScreen = false }
+                )
+            } else if (showAchievementsScreen) {
+                AchievementsScreen(
+                    onBack = { showAchievementsScreen = false }
                 )
             } else {
                 Scaffold(
@@ -152,13 +178,39 @@ fun QuestListScreen(viewModel: QuestViewModel = hiltViewModel()) {
                                     progress = viewModel.getExperienceProgress()
                                 )
                             }
-                            LazyColumn {
-                                items(quests) { quest ->
-                                    QuestItemCard(
-                                        quest = quest,
-                                        onCardClick = { selectedQuest = quest }
+                            // TODO fix infinite load
+                            achievements?.let {
+
+                            } ?: run {
+                                viewModel.initializeAchievements()
+                            }
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp),
+                                horizontalArrangement = Arrangement.End
+                            ) {
+                                IconButton(
+                                    onClick = { isGridView = !isGridView }
+                                ) {
+                                    Icon(
+                                        imageVector = if (!isGridView) Icons.AutoMirrored.Filled.List else Grid,
+                                        contentDescription = if (isGridView) stringResource(R.string.show_as_list) else stringResource(
+                                            R.string.show_as_grid
+                                        )
                                     )
                                 }
+                            }
+                            if (isGridView) {
+                                QuestGrid(
+                                    quests = quests,
+                                    onCardClick = { quest -> selectedQuest = quest }
+                                )
+                            } else {
+                                QuestList(
+                                    quests = quests,
+                                    onCardClick = { quest -> selectedQuest = quest }
+                                )
                             }
                         }
 

@@ -1,4 +1,4 @@
-package com.example.riseup.ui.components
+package com.example.riseup.ui.components.dialogs
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

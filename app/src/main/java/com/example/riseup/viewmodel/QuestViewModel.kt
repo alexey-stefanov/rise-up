@@ -4,13 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.riseup.model.achievement.Achievement
 import com.example.riseup.model.character.Character
 import com.example.riseup.model.quest.Quest
 import com.example.riseup.model.quest.QuestDifficulty
 import com.example.riseup.model.quest.QuestState
 import com.example.riseup.model.quest.QuestType
+import com.example.riseup.repository.AchievementRepository
 import com.example.riseup.repository.CharacterRepository
 import com.example.riseup.repository.QuestRepository
+import com.example.riseup.util.AchievementEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,10 +22,12 @@ import kotlin.math.pow
 @HiltViewModel
 class QuestViewModel @Inject constructor(
     private val questRepository: QuestRepository,
-    private val characterRepository: CharacterRepository
+    private val characterRepository: CharacterRepository,
+    private val achievementRepository: AchievementRepository
 ) : ViewModel() {
     val quests: LiveData<List<Quest>> = questRepository.getActiveQuests().asLiveData()
     val character: LiveData<Character?> = characterRepository.getCharacter().asLiveData()
+    val achievements: LiveData<List<Achievement>?> = achievementRepository.getAllAchievements().asLiveData()
 
     init {
         viewModelScope.launch {
@@ -37,6 +42,13 @@ class QuestViewModel @Inject constructor(
 
     private suspend fun initializeDailyQuests() {
         questRepository.initializeDailyQuests()
+    }
+
+    // TODO change this
+    fun initializeAchievements() {
+        viewModelScope.launch {
+            achievementRepository.initializeAchievementsIfNeeded()
+        }
     }
 
     fun getExperienceProgress(): Float {
@@ -86,8 +98,9 @@ class QuestViewModel @Inject constructor(
                     xpForNextLevel = calculateXpForNextLevel(newLevel)
                 }
 
-                questRepository.updateQuest(quest.copy(state = QuestState.Completed(System.currentTimeMillis())))
+                achievementRepository.updateAchievementsOnEvent(AchievementEvent.QuestCompleted)
                 characterRepository.updateCharacter(newLevel, newXp, xpForNextLevel)
+                questRepository.updateQuest(quest.copy(state = QuestState.Completed(System.currentTimeMillis())))
             }
         }
     }

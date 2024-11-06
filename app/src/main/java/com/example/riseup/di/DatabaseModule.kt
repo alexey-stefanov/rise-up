@@ -3,6 +3,7 @@ package com.example.riseup.di
 import android.content.Context
 import androidx.room.Room
 import com.example.riseup.data.local.AppDatabase
+import com.example.riseup.data.local.dao.AchievementDao
 import com.example.riseup.data.local.dao.CharacterDao
 import com.example.riseup.data.local.dao.QuestDao
 import dagger.Module
@@ -31,4 +32,7 @@ object DatabaseModule {
 
     @Provides
     fun provideCharacterDao(database: AppDatabase): CharacterDao = database.characterDao()
+
+    @Provides
+    fun provideAchievementDao(database: AppDatabase): AchievementDao = database.achievementDao()
 }

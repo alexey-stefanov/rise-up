@@ -31,11 +31,11 @@ class DailyQuestManager @Inject constructor(
 
     fun getDailyQuests(): List<Quest> {
         return listOf(
-            Quest(id = 0, name = "Сделать зарядку", description = "", type = QuestType.DAILY, difficulty = QuestDifficulty.EASY, state = QuestState.Accepted),
-            Quest(id = 0, name = "Прочитать книгу", description = "", type = QuestType.DAILY, difficulty = QuestDifficulty.MEDIUM, state = QuestState.Accepted),
-            Quest(id = 0, name = "Медитировать", description = "", type = QuestType.DAILY, difficulty = QuestDifficulty.EASY, state = QuestState.Accepted),
-            Quest(id = 0, name = "Сходить на пробежку", description = "", type = QuestType.DAILY, difficulty = QuestDifficulty.HARD, state = QuestState.Accepted),
-            Quest(id = 0, name = "Выпить воды", description = "", type = QuestType.DAILY, difficulty = QuestDifficulty.MEDIUM, state = QuestState.Accepted)
+            Quest(name = "Сделать зарядку", description = "", type = QuestType.DAILY, difficulty = QuestDifficulty.EASY, state = QuestState.Accepted),
+            Quest(name = "Прочитать книгу", description = "", type = QuestType.DAILY, difficulty = QuestDifficulty.MEDIUM, state = QuestState.Accepted),
+            Quest(name = "Медитировать", description = "", type = QuestType.DAILY, difficulty = QuestDifficulty.EASY, state = QuestState.Accepted),
+            Quest(name = "Сходить на пробежку", description = "", type = QuestType.DAILY, difficulty = QuestDifficulty.HARD, state = QuestState.Accepted),
+            Quest(name = "Выпить воды", description = "", type = QuestType.DAILY, difficulty = QuestDifficulty.MEDIUM, state = QuestState.Accepted)
         )
     }
 

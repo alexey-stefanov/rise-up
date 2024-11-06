@@ -2,8 +2,6 @@
     <string name="app_name">RiseUp</string>
     <string name="quests">Задания</string>
     <string name="add_quest">Добавить задание</string>
-    <string name="delete_quest">Удалить задание</string>
-    <string name="active_quest">Активное задание</string>
     <string name="quest_name">Название задания</string>
     <string name="description">Описание</string>
     <string name="cancel">Отмена</string>
@@ -11,7 +9,7 @@
     <string name="description_missing">Описание отсутствует</string>
     <string name="accept">Принять</string>
     <string name="decline">Отказаться</string>
-    <string name="completed">Выполнено</string>
+    <string name="complete">Завершить</string>
     <string name="xp">опыта</string>
     <string name="quest_completed">Задание выполнено! Получено %d опыта!</string>
     <string name="difficulty">Уровень сложности</string>
@@ -24,4 +22,8 @@
     <string name="no_achievements">Нет достижений</string>
     <string name="back">Назад</string>
     <string name="quest_history">История заданий</string>
+    <string name="all_quests_completed">Похоже что все задания на сегодня выполнены. Так держать!</string>
+    <string name="no_completed_quests">Здесь появятся ваши выполненные задания</string>
+    <string name="show_as_list">Показать как список</string>
+    <string name="show_as_grid">Показать как сетку</string>
 </resources>

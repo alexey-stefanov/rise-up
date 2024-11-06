@@ -1,4 +1,4 @@
-package com.example.riseup.ui.components
+package com.example.riseup.ui.components.cards
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -42,6 +42,7 @@ fun QuestItemCard(
     onCardClick: () -> Unit
 ) {
 
+    // TODO Refactor UI
     val questTypeIndicator = when (quest.difficulty) {
         QuestDifficulty.EASY -> Gray
         QuestDifficulty.MEDIUM -> Green

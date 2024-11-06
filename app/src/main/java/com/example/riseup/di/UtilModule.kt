@@ -2,6 +2,7 @@ package com.example.riseup.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.riseup.util.AchievementManager
 import com.example.riseup.util.DailyQuestManager
 import dagger.Module
 import dagger.Provides
@@ -24,5 +25,11 @@ object UtilModule {
     @Singleton
     fun provideDailyQuestManager(sharedPreferences: SharedPreferences): DailyQuestManager {
         return DailyQuestManager(sharedPreferences)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAchievementManager(): AchievementManager {
+        return AchievementManager()
     }
 }

@@ -37,8 +37,9 @@ class QuestRepositoryImpl @Inject constructor(
         if (dailyQuestManager.shouldInitializeDailyQuests()) {
             val oldDailyQuests = dailyQuestManager.getDailyQuests()
 
-            // xp penalty logic
+            //TODO xp penalty logic
 
+            //TODO fix quests not deleting
             oldDailyQuests.forEach { deleteQuest(it) }
             val newDailyQuests = dailyQuestManager.getDailyQuests()
             newDailyQuests.forEach { insertQuest(it) }
